@@ -34,3 +34,4 @@ release. Preserve the mapping and rationale in `THIRD_PARTY_NOTICES.md`.
 2. `docs/CURRENT_STATE.md`
 3. `docs/ROADMAP.md`
 4. `THIRD_PARTY_NOTICES.md`
+5. `docs/DELIVERY_PLAN.md`

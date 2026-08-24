@@ -12,6 +12,7 @@ $requiredFiles = @(
     'trapping_array_pcell.lym',
     'docs/PROJECT_EXECUTION_PROTOCOL.md',
     'docs/CURRENT_STATE.md',
+    'docs/DELIVERY_PLAN.md',
     'docs/ROADMAP.md'
 )
 
