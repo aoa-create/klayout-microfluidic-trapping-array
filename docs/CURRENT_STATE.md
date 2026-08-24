@@ -8,6 +8,9 @@
 - Imported artifact: `trapping_array_pcell.lym`.
 - Existing GUI host: KLayout macro/PCell interface.
 - Local KLayout command availability: not detected during baseline setup.
+- Installation checkpoint: the official KLayout 0.30.11 installer hash was
+  verified on 2026-08-25, but the installer exited with `0x800704c7` before
+  completion. KLayout remains unavailable; no GUI smoke test has been claimed.
 
 ## Observed upstream capability
 
