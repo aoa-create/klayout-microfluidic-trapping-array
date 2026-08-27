@@ -1,0 +1,31 @@
+name: ci
+
+on:
+  push:
+    branches:
+      - master
+      - "feature/**"
+      - "fix/**"
+      - "chore/**"
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  structural-tests:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: "pip"
+      - name: Install test tooling
+        run: python -m pip install -e ".[dev]"
+      - name: Lint repository tests
+        run: python -m ruff check tests
+      - name: Run structural tests
+        run: python -m pytest -q
+      - name: KLayout execution boundary
+        run: echo "KLayout is not installed in this workflow; PCell GUI/geometry acceptance requires a real KLayout environment."
