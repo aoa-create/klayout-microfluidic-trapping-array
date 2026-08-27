@@ -27,10 +27,20 @@ $macroPath = Join-Path $RepositoryRoot 'trapping_array_pcell.lym'
 $macroHash = (Get-FileHash -LiteralPath $macroPath -Algorithm SHA256).Hash
 $projectHead = git -C $RepositoryRoot rev-parse HEAD
 $origin = git -C $RepositoryRoot remote get-url origin
+$klayoutExecutable = Get-Command klayout, klayout_app -ErrorAction SilentlyContinue | Select-Object -First 1
+if (-not $klayoutExecutable) {
+    $knownInstall = Join-Path $env:APPDATA 'KLayout\klayout_app.exe'
+    if (Test-Path -LiteralPath $knownInstall -PathType Leaf) {
+        $klayoutExecutable = Get-Item -LiteralPath $knownInstall
+    }
+}
 
 [pscustomobject]@{
     ProjectCommit  = $projectHead.Trim()
     Origin         = $origin.Trim()
     MacroSha256    = $macroHash
-    KLayoutFound   = [bool](Get-Command klayout -ErrorAction SilentlyContinue)
+    KLayoutFound   = [bool]$klayoutExecutable
+    KLayoutPath    = if ($klayoutExecutable) {
+        if ($klayoutExecutable.Source) { $klayoutExecutable.Source } else { $klayoutExecutable.FullName }
+    } else { $null }
 } | Format-List
