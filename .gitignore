@@ -1,0 +1,37 @@
+# Python tooling
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+.coverage
+htmlcov/
+.venv/
+venv/
+
+# IDE / OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# Local KLayout state
+.klayout/
+*.lyp
+*.lyt
+*.l2n
+
+# Generated layout and report outputs
+*.gds
+*.gdsii
+*.oas
+*.oasis
+*.log
+build/
+dist/
+
+# Secrets / local configuration
+.env
+.env.*
+!.env.example
