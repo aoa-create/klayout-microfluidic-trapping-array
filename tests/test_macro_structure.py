@@ -1,7 +1,6 @@
 import xml.etree.ElementTree as ET
 from pathlib import Path
 
-
 ROOT = Path(__file__).resolve().parents[1]
 MACRO = ROOT / "trapping_array_pcell.lym"
 
