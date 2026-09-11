@@ -1,0 +1,73 @@
+name: User Documentation Gate
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  user-documentation:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Kullanıcı bilgilendirme yapısını ve görev günlüğünü doğrula
+        shell: python
+        env:
+          EVENT_NAME: ${{ github.event_name }}
+          BASE_REF: ${{ github.base_ref }}
+          BEFORE_SHA: ${{ github.event.before }}
+        run: |
+          from pathlib import Path
+          import os, subprocess, sys
+
+          root=Path("KULLANICI_BILGILENDIRME.md")
+          manifest=Path("docs/kullanici-bilgilendirme/PATH_MANIFEST.txt")
+          if not root.exists() or not manifest.exists():
+              sys.exit("Kullanıcı bilgilendirme dosyaları eksik.")
+
+          files=subprocess.check_output(["git","ls-files"], text=True).splitlines()
+          paths=set(files)
+          for f in files:
+              for parent in Path(f).parents:
+                  s=parent.as_posix()
+                  if s!=".": paths.add(s)
+
+          expected={x.strip() for x in manifest.read_text(encoding="utf-8").splitlines() if x.strip()}
+          docs=root.read_text(encoding="utf-8")
+          d=Path("docs/kullanici-bilgilendirme")
+          for p in d.glob("*.md"):
+              docs+="\n"+p.read_text(encoding="utf-8")
+
+          missing=sorted(paths-expected)
+          stale=sorted(expected-paths)
+          undocumented=sorted(p for p in paths if p not in docs and p!=manifest.as_posix())
+
+          event=os.environ.get("EVENT_NAME","")
+          changed=[]
+          try:
+              if event=="pull_request" and os.environ.get("BASE_REF"):
+                  base="origin/"+os.environ["BASE_REF"]
+                  changed=subprocess.check_output(["git","diff","--name-only",base+"...HEAD"],text=True).splitlines()
+              else:
+                  before=os.environ.get("BEFORE_SHA","")
+                  if before and set(before)!={"0"}:
+                      changed=subprocess.check_output(["git","diff","--name-only",before,"HEAD"],text=True).splitlines()
+                  else:
+                      changed=subprocess.check_output(["git","diff-tree","--no-commit-id","--name-only","-r","HEAD"],text=True).splitlines()
+          except Exception:
+              changed=subprocess.check_output(["git","diff-tree","--no-commit-id","--name-only","-r","HEAD"],text=True).splitlines()
+
+          if changed and "KULLANICI_BILGILENDIRME.md" not in changed:
+              print("Bu görevde repository değişti ancak KULLANICI_BILGILENDIRME.md güncellenmedi.")
+              print("Değişen dosyalar:", *changed, sep="\n- ")
+              sys.exit(1)
+
+          if missing or stale or undocumented:
+              print("Kullanıcı dokümantasyonu güncel değil.")
+              if missing: print("Manifestte eksik:",*missing,sep="\n- ")
+              if stale: print("Manifestte artık olmayan:",*stale,sep="\n- ")
+              if undocumented: print("Tree/açıklamada bulunmayan:",*undocumented,sep="\n- ")
+              sys.exit(1)
+
+          print(f"OK: {len(paths)} yol belgelenmiş ve görev günlüğü güncellenmiş.")
