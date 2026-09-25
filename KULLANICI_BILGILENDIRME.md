@@ -27,6 +27,10 @@ klayout-microfluidic-trapping-array/
 ├── docs/ ← Proje dokümantasyonunu içerir. [Yol: docs]
 │   └── kullanici-bilgilendirme/ ← “kullanici-bilgilendirme” alanıyla ilgili dosyaları gruplar. [Yol: docs/kullanici-bilgilendirme]
 │       └── PATH_MANIFEST.txt ← “PATH_MANIFEST.txt” adlı proje dosyasıdır; bulunduğu klasörün işlevinin bir parçasıdır. [Yol: docs/kullanici-bilgilendirme/PATH_MANIFEST.txt]
+├── kaggle/ ← Bilgisayarlardan bağımsız Kaggle worker dosyalarını içerir. [Yol: kaggle]
+│   ├── AGENT_TASK.md ← Kaggle ajanının varsayılan, güvenli görev kapsamını tanımlar. [Yol: kaggle/AGENT_TASK.md]
+│   ├── README.md ← Kaggle kurulumu, Secrets ve çalıştırma adımlarını açıklar. [Yol: kaggle/README.md]
+│   └── run_worker.py ← Test, ajan, doğrulama, commit ve worker-branch push döngüsünü yürütür. [Yol: kaggle/run_worker.py]
 ├── pyproject.toml ← Uygulama veya geliştirme araçları için yapılandırma dosyasıdır. [Yol: pyproject.toml]
 ├── tests/ ← Otomatik testleri içerir. [Yol: tests]
 │   └── test_macro_structure.py ← “macro structure” davranışını doğrulayan Python test dosyasıdır. [Yol: tests/test_macro_structure.py]
@@ -51,6 +55,7 @@ flowchart LR
 
 | Tarih | İş | Sonuç |
 |---|---|---|
+| 2026-09-25 | Kaggle üzerinde bilgisayarlardan bağımsız doğrulama ve opsiyonel Aider ajan çalıştırma altyapısı eklendi. | PR üzerinden doğrulanıyor |
 | 2026-09-12 | Kullanıcı bilgilendirme ve documentation gate sistemi projeye eklendi. | Tamamlandı |
 
 > Bundan sonra **her görev** bu tabloya veya bu bölümün altına anlaşılır bir özet olarak işlenir.
