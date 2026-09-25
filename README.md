@@ -189,3 +189,13 @@ from core import make_fixed_grid, generate_gds
 ## License
 
 MIT — Fattaccioli Lab, Institut Pierre-Gilles de Gennes, Paris.
+
+---
+
+## Kaggle autonomous worker
+
+A computer-independent Kaggle worker bootstrap is available under
+[`kaggle/`](kaggle/README.md). It can run repository checks in CPU-only mode
+and, when model secrets are configured, execute an Aider coding pass through an
+OpenAI-compatible API. It works on an isolated `kaggle/autonomous-worker`
+branch and does not replace KLayout GUI/runtime acceptance testing.
